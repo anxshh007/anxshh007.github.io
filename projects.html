@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Project case files — SOLARIS, ArthSetu, Fasal Raksha, RETICLE, Nivesh Analyser and OpportunityLens AI. What each one does, how it works, and where its limits are.">
+
+<meta name="author" content="Angshuman Bhagat">
+<meta name="theme-color" content="#07090C">
+<link rel="canonical" href="https://anxshh007.github.io/projects.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%276%27%20fill%3D%27%2307090C%27%2F%3E%3Cpath%20d%3D%27M16%206.5%20L24.8%2025.5%20H20.6%20L16%2015.2%20L11.4%2025.5%20H7.2%20Z%27%20fill%3D%27%23F56217%27%2F%3E%3C%2Fsvg%3E">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Angshuman Bhagat">
+<meta property="og:title" content="Project Case Files — Angshuman Bhagat">
+<meta property="og:description" content="Long-form write-ups of six public projects: what each does, how it works underneath, and where its limits are.">
+<meta property="og:url" content="https://anxshh007.github.io/projects.html">
+<meta property="og:image" content="https://anxshh007.github.io/assets/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Angshuman Bhagat — data and applied-AI engineer, Kolkata, India.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Project Case Files — Angshuman Bhagat">
+<meta name="twitter:description" content="Long-form write-ups of six public projects: what each does, how it works underneath, and where its limits are.">
+<meta name="twitter:image" content="https://anxshh007.github.io/assets/og-card.jpg">
+
+<title>Project Case Files</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* ============================================================
+   Project case files — same instrument-console world as the
+   portfolio index, tuned for long-form reading.
+   ============================================================ */
+:root{
+  --ink:        #07090C;
+  --ink-2:      #0C1014;
+  --ink-3:      #10161B;
+  --rule:       #1A2027;
+  --rule-soft:  #141A20;
+  --text:       #E6EAEE;
+  --dim:        #8B96A2;
+  --dimmer:     #5D6975;
+  --ember:      #F56217;
+  --sand:       #FFD194;
+  --petrol:     #3E8FB8;
+  --live:       #35D07F;
+
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --body: "Instrument Sans", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  --disp: "Big Shoulders Display", "Oswald", "Arial Narrow", var(--body);
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --rail: 226px;
+  --gut: clamp(20px, 5vw, 64px);
+  --measure: 70ch;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+
+body{
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15.5px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+a { color: inherit; }
+::selection { background: var(--ember); color: #07090C; }
+:where(a, button, [tabindex]):focus-visible{
+  outline: 2px solid var(--ember);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.label{
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--dimmer);
+}
+
+/* ---------- motion ---------- */
+@keyframes riseIn{
+  from{ opacity: .35; transform: translateY(12px); }
+  to  { opacity: 1;   transform: none; }
+}
+@keyframes maskRise{
+  from{ transform: translateY(102%); }
+  to  { transform: translateY(0); }
+}
+.reveal{ animation: riseIn .62s var(--ease) both; animation-delay: var(--d, 0s); }
+.rise{ transform: translateY(var(--ry, 0px)); opacity: var(--ro, 1); }
+
+/* ============================================================
+   Rail
+   ============================================================ */
+.rail{
+  position: fixed; inset: 0 auto 0 0; width: var(--rail);
+  padding: 34px 0 30px var(--gut);
+  display: none; flex-direction: column; justify-content: space-between;
+  z-index: 40;
+  border-right: 1px solid var(--rule-soft);
+  background: linear-gradient(90deg, var(--ink) 70%, transparent);
+}
+.rail-top{ display: flex; flex-direction: column; gap: 26px; }
+.rail-back{
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); text-decoration: none;
+  transition: color .25s ease, gap .3s var(--ease);
+}
+.rail-back:hover{ color: var(--ember); gap: 12px; }
+
+.rail-navwrap{ position: relative; }
+.rail-marker{
+  position: absolute; left: 0; top: 0; width: 22px; height: 1px;
+  background: var(--ember); box-shadow: 0 0 8px var(--ember);
+  opacity: 0;
+  transform: translateY(var(--marker-y, 0px));
+  transition: transform .42s var(--ease), opacity .3s ease;
+  pointer-events: none;
+}
+.rail-nav{ display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.rail-nav a{
+  display: grid; grid-template-columns: 22px 1fr; align-items: center; gap: 8px;
+  padding: 4px 0;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dimmer); text-decoration: none;
+  transition: color .25s ease, transform .3s var(--ease);
+}
+.rail-nav a::before{
+  content: ""; height: 1px; width: 10px; background: currentColor;
+  transition: width .3s var(--ease);
+}
+.rail-nav a:hover{ color: var(--dim); transform: translateX(3px); }
+.rail-nav a[aria-current="true"]{ color: var(--text); }
+.rail-nav a[aria-current="true"]::before{ width: 22px; }
+
+.rail-foot{ display: flex; flex-direction: column; gap: 10px; }
+.rail-gauge{ height: 2px; width: 118px; background: var(--rule); overflow: hidden; }
+.rail-gauge i{ display: block; height: 100%; width: 0%; background: var(--ember); }
+.rail-pct{ font-variant-numeric: tabular-nums; }
+
+@media (min-width: 1080px){ .rail{ display: flex; } }
+
+.topbar{
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--ember); transform-origin: 0 50%; transform: scaleX(0); z-index: 60;
+}
+@media (min-width: 1080px){ .topbar{ display: none; } }
+
+/* ============================================================
+   Shell
+   ============================================================ */
+.shell{ margin-left: 0; padding: 0 var(--gut); max-width: 1180px; }
+@media (min-width: 1080px){
+  .shell{ margin-left: var(--rail); padding-right: clamp(24px, 6vw, 90px); }
+}
+
+/* mobile back link */
+.mobile-back{
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 26px 0 0;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); text-decoration: none;
+  border-bottom: 1px solid var(--rule); padding-bottom: 4px;
+}
+.mobile-back:hover{ color: var(--ember); border-color: var(--ember); }
+@media (min-width: 1080px){ .mobile-back{ display: none; } }
+
+/* ============================================================
+   Masthead
+   ============================================================ */
+.masthead{ padding: clamp(46px, 8vh, 92px) 0 clamp(40px, 6vw, 66px); }
+.mast-title{
+  font-family: var(--disp); font-weight: 800; text-transform: uppercase;
+  font-size: clamp(46px, 9.5vw, 122px); line-height: .86; letter-spacing: .004em;
+  margin: 20px 0 0;
+}
+.mast-title .line{ display: block; overflow: hidden; padding-bottom: .04em; }
+.mast-title .line i{
+  display: block; font-style: normal;
+  animation: maskRise .82s var(--ease) both; animation-delay: var(--d, 0s);
+}
+.mast-title .n2 i{ color: transparent; -webkit-text-stroke: 1.2px var(--dimmer); }
+
+.mast-lede{
+  max-width: var(--measure); color: var(--dim);
+  font-size: 17px; line-height: 1.65; margin: 30px 0 0;
+}
+.mast-lede strong{ color: var(--text); font-weight: 500; }
+
+.mast-meta{
+  display: flex; flex-wrap: wrap; gap: 10px 28px;
+  margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--dimmer);
+}
+.mast-meta b{ color: var(--text); font-weight: 500; }
+
+/* ============================================================
+   A project case file
+   ============================================================ */
+.case{ padding: clamp(56px, 8vw, 100px) 0; border-top: 1px solid var(--rule); }
+/* A case file that is centred and being read carries no transform and no
+   will-change, so its type renders unpromoted and crisp. The depth effect
+   attaches only while the section is actually moving. */
+.case-body{ transform-origin: 50% 42%; }
+.case-body.tilting{
+  transform: scale(var(--z, 1));
+  opacity: var(--o, 1);
+  will-change: transform, opacity;
+}
+
+.case-head{ display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+.case-tagrow{ display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; }
+.case-role{
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ember);
+}
+.case-ctx{
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--dimmer);
+}
+.case-title{
+  font-family: var(--disp); font-weight: 600; text-transform: uppercase;
+  font-size: clamp(38px, 6.4vw, 74px); line-height: .92; letter-spacing: .008em;
+  margin: 0;
+}
+.case-thesis{
+  max-width: var(--measure); color: var(--dim);
+  font-size: 17px; line-height: 1.62; margin: 6px 0 0;
+}
+.case-thesis strong{ color: var(--text); font-weight: 500; }
+
+/* ---------- screenshot frame ---------- */
+.shot{
+  margin: 34px 0 4px;
+  border: 1px solid var(--rule);
+  background: var(--ink-2);
+}
+.shot-bar{
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em;
+  color: var(--dimmer);
+}
+.shot-dots{ display: flex; gap: 5px; flex: 0 0 auto; }
+.shot-dots i{ width: 7px; height: 7px; border-radius: 50%; background: var(--rule); display: block; }
+.shot-name{ min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.shot img{
+  display: block; width: 100%; height: auto;
+  background: var(--ink-3);
+}
+.shot-cap{
+  margin: 10px 0 0;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .05em;
+  color: var(--dimmer); line-height: 1.6;
+}
+.shot-cap b{ color: var(--dim); font-weight: 500; }
+
+.shot-pair{ display: grid; gap: 18px; margin: 34px 0 4px; }
+@media (min-width: 900px){ .shot-pair{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.shot-pair .shot{ margin: 0; }
+
+/* ---------- diagram stand-in, where no UI exists to capture ---------- */
+.diagram{
+  margin: 34px 0 4px;
+  border: 1px solid var(--rule);
+  background: var(--ink-2);
+  padding: 26px 22px 22px;
+}
+.diagram svg{ display: block; width: 100%; height: auto; }
+
+/* ---------- prose blocks ---------- */
+.blocks{ display: grid; gap: 1px; background: var(--rule-soft); margin-top: 38px; }
+@media (min-width: 860px){ .blocks{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.block{ background: var(--ink); padding: 22px 22px 24px; }
+.block h3{
+  margin: 0 0 10px;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--dimmer);
+}
+.block p{ margin: 0 0 12px; color: var(--dim); }
+.block p:last-child{ margin-bottom: 0; }
+.block strong{ color: var(--text); font-weight: 500; }
+.block.wide{ grid-column: 1 / -1; }
+
+/* keyed lists — capability / pillar tables */
+.keyed{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; background: var(--rule-soft); }
+.keyed li{ background: var(--ink); display: grid; gap: 2px 20px; padding: 11px 0; }
+@media (min-width: 620px){ .keyed li{ grid-template-columns: 190px minmax(0,1fr); align-items: baseline; } }
+.keyed dt, .keyed .k{
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .03em;
+  color: var(--text); margin: 0;
+}
+.keyed .v{ color: var(--dim); font-size: 14px; margin: 0; }
+
+/* limits get a distinct, quieter treatment — they are not features */
+.limits{ border-left: 1px solid var(--rule); padding-left: 18px; }
+.limits ul{ margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.limits li{ color: var(--dim); font-size: 14px; padding-left: 16px; position: relative; }
+.limits li::before{
+  content: ""; position: absolute; left: 0; top: .62em;
+  width: 7px; height: 1px; background: var(--dimmer);
+}
+
+/* ---------- footer of a case ---------- */
+.case-foot{
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+  margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--rule-soft);
+}
+.stack{ display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.stack li{
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .05em;
+  color: var(--dimmer); border: 1px solid var(--rule); padding: 3px 8px;
+}
+.repo{
+  position: relative;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em;
+  color: var(--text); text-decoration: none; padding-bottom: 3px;
+  transition: color .25s ease;
+}
+.repo::before{
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: #F5621766;
+}
+.repo::after{ content: "↗"; font-size: 11px; color: var(--ember); transition: transform .3s var(--ease); }
+.repo span{
+  position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+  background: var(--ember); transform: scaleX(0); transform-origin: left;
+  transition: transform .4s var(--ease);
+}
+.repo:hover{ color: var(--ember); }
+.repo:hover span{ transform: scaleX(1); }
+.repo:hover::after{ transform: translate(3px,-3px); }
+
+/* ============================================================
+   Tail
+   ============================================================ */
+.tail{ padding: clamp(56px, 8vw, 96px) 0 clamp(70px, 10vw, 120px); border-top: 1px solid var(--rule); }
+.tail h2{
+  font-family: var(--disp); font-weight: 600; text-transform: uppercase;
+  font-size: clamp(30px, 4.4vw, 46px); line-height: .98; margin: 0 0 18px;
+}
+.tail p{ max-width: var(--measure); color: var(--dim); margin: 0 0 26px; }
+.back-home{
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text); text-decoration: none;
+  border: 1px solid var(--rule); padding: 12px 18px;
+  transition: border-color .25s ease, color .25s ease, gap .3s var(--ease);
+}
+.back-home:hover{ border-color: var(--ember); color: var(--ember); gap: 14px; }
+
+.foot{
+  margin-top: clamp(48px, 7vw, 76px); padding-top: 18px; border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dimmer);
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  .case-body, .case-body.tilting{ transform: none !important; opacity: 1 !important; will-change: auto; }
+  .rise{ transform: none !important; opacity: 1 !important; }
+  .reveal, .mast-title .line i{ animation: none !important; }
+  *{ transition-duration: .01ms !important; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="topbar" id="topbar" aria-hidden="true"></div>
+
+<aside class="rail" aria-label="Project navigation">
+  <div class="rail-top">
+    <a class="rail-back" href="index.html">← Portfolio</a>
+    <nav class="rail-navwrap">
+      <span class="rail-marker" id="railmarker" aria-hidden="true"></span>
+      <ul class="rail-nav" id="railnav">
+        <li><a href="#solaris">SOLARIS</a></li>
+        <li><a href="#arthsetu">ArthSetu</a></li>
+        <li><a href="#fasal">Fasal Raksha</a></li>
+        <li><a href="#reticle">RETICLE</a></li>
+        <li><a href="#nivesh">Nivesh</a></li>
+        <li><a href="#lens">OpportunityLens</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="rail-foot">
+    <div class="rail-gauge" aria-hidden="true"><i id="gauge"></i></div>
+    <div class="label"><span class="rail-pct" id="railpct">00</span>% · 6 case files</div>
+  </div>
+</aside>
+
+<main class="shell">
+
+  
+  <header class="masthead">
+    <a class="mobile-back" href="index.html">← Portfolio</a>
+    <div class="label reveal" style="--d:.05s; margin-top:22px">Angshuman Bhagat · Case files</div>
+    <h1 class="mast-title">
+      <span class="line"><i style="--d:.12s">Every</i></span>
+      <span class="line n2"><i style="--d:.22s">Project</i></span>
+    </h1>
+    <p class="mast-lede reveal" style="--d:.42s">
+      Six builds, written up properly: what each one is for, how it actually works underneath, and
+      <strong>where its limits are</strong>. The last part matters most. Every claim below is drawn from the
+      project's own repository documentation.
+    </p>
+    <div class="mast-meta reveal" style="--d:.52s">
+      <span><b>06</b> projects</span>
+      <span><b>All</b> repositories public</span>
+      <span>Python · TypeScript · JavaScript</span>
+      <span>2025 — 2026</span>
+    </div>
+  </header>
+
+  
+  <section class="case" id="solaris">
+    <div class="case-body">
+      <div class="case-head">
+        <div class="case-tagrow">
+          <span class="case-role">Technical Lead</span>
+          <span class="case-ctx">TSM TECHNOVA 2026 — National AI Innovation Challenge</span>
+        </div>
+        <h2 class="case-title">SOLARIS</h2>
+        <p class="case-thesis">
+          Solar intelligence for the living grid. A unified layer over generation, weather, storage, grid
+          conditions, installation geometry, tariffs and regulatory workflow — turning all of it into
+          <strong>decisions that can be argued with</strong>. Not a monitoring dashboard: the thing it replaces is
+          the spreadsheet an operator keeps open beside four other tools.
+        </p>
+      </div>
+
+      <figure class="shot rise" style="margin:0">
+        <div class="shot-bar">
+          <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="shot-name">SOLARIS — Command Center</span>
+        </div>
+        <img src="assets/solaris-command.jpg" alt="The SOLARIS Command Center: a dark operations dashboard with generation, forecast, grid risk, battery and dispatch tiles, each labelled with the source of its number." loading="lazy" width="1400" height="641">
+      </figure>
+      <p class="shot-cap">The Command Center. Every tile is labelled by where its number came from.</p>
+
+      <div class="blocks">
+        <div class="block">
+          <h3>The idea it is built on</h3>
+          <p>
+            Every number the product displays comes from one of three places, and the interface always says which:
+            <strong>SIF-X</strong> (a model trained in-app on your data, with metrics measured on a held-out slice),
+            <strong>Physics</strong> (solar geometry and irradiance from published models — NOAA, Haurwitz, Erbs,
+            Liu–Jordan, PVWatts), or <strong>SIMULATED</strong> (the deterministic scenario engine, labelled as such
+            everywhere it surfaces).
+          </p>
+          <p>
+            No external API is contacted. No integration reports <code>CONNECTED</code> unless an endpoint is
+            genuinely configured, and there are no hard-coded accuracy claims anywhere in the codebase.
+          </p>
+        </div>
+        <div class="block">
+          <h3>My role</h3>
+          <p>
+            Technical Lead on a three-person team from Techno India University — Tanisha Dey led the team and
+            Rohit Singh led the non-technical side. I directed the architecture across the Python service, the
+            React front end and the ML engine, and held two constraints through the whole build: every model
+            output ships with its confidence, drivers and reasoning; and the platform installs and runs
+            <strong>offline, with no GPU</strong>.
+          </p>
+        </div>
+
+        <div class="block wide">
+          <h3>The three chains that genuinely work end to end</h3>
+          <ul class="keyed">
+            <li>
+              <p class="k">Scenario → decision</p>
+              <p class="v">Change the scenario on the Command Center and it propagates: the weather layer, the SIF-X forecast, composite grid risk, the battery trajectory, the dispatch optimum and the recommended action all move, because they all read one simulated physical state.</p>
+            </li>
+            <li>
+              <p class="k">Roof → annual yield</p>
+              <p class="v">Drag a tree on the Design canvas. Shadows re-project from real solar geometry, per-module shading losses change, and the optimiser searches mount type, tilt, azimuth and orientation for maximum annual kWh — subject to roof area, fire-code setback and winter row pitch.</p>
+            </li>
+            <li>
+              <p class="k">Dataset → live forecast</p>
+              <p class="v">Upload a CSV in the Data Lab. The engine infers the schema, trains, reports MAE, RMSE, R² and interval coverage on a chronologically held-out slice, compares itself against three baselines, and then serves the live Command Center forecast from that model.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h3>SIF-X, the engine</h3>
+          <p>
+            The ML engine deliberately has <strong>no deep-learning framework dependency</strong>. SIF-X is
+            implemented directly on NumPy with hand-derived backpropagation — which is why a trained artefact is
+            on the order of <strong>70 KB</strong>, inference needs no GPU, and the whole platform runs offline.
+          </p>
+          <p>
+            Twelve surfaces ship in the app, from Command and Digital Twin through Forecast, Asset Health, Grid,
+            Design, Workflow, Data Lab and Security. The interface is available in five languages: English, Hindi,
+            Bengali, Tamil and Marathi. 148 backend tests cover it.
+          </p>
+        </div>
+        <div class="block limits">
+          <h3>Honest limits</h3>
+          <ul>
+            <li>The repository opens by telling you to read <code>LIMITATIONS.md</code> before judging any claim in it.</li>
+            <li>Scenario state is simulated and labelled <code>SIMULATED</code> wherever it appears on screen.</li>
+            <li>External integrations are seams, not live connections — nothing reports connected unless it really is.</li>
+            <li>Demo credentials are published deliberately; the API refuses to boot in production while any secret is still at its default.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-foot">
+        <ul class="stack">
+          <li>Python 3.11</li><li>FastAPI</li><li>SQLAlchemy 2.0</li><li>NumPy</li><li>pandas</li>
+          <li>React 18</li><li>TypeScript</li><li>Vite</li><li>Tailwind v4</li><li>Zustand</li>
+        </ul>
+        <a class="repo" href="https://github.com/anxshh007/SOLARIS-solar-intelligence-for-the-living-grid" target="_blank" rel="noopener noreferrer">Repository<span aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="case" id="arthsetu">
+    <div class="case-body">
+      <div class="case-head">
+        <div class="case-tagrow">
+          <span class="case-role">Fintech · Trust estimation</span>
+          <span class="case-ctx">TypeScript · Python · 84 API endpoints</span>
+        </div>
+        <h2 class="case-title">ArthSetu</h2>
+        <p class="case-thesis">
+          FinTech for Bharat — <strong>making every rupee explainable</strong>. Not a set of mock screens: the
+          parsers parse, the model trains on whatever you upload, the audit chain verifies, and every number on
+          every screen traces back to the transactions that produced it.
+        </p>
+      </div>
+
+      <div class="diagram rise">
+        <div class="label" style="margin-bottom:18px">BACTE — behavioural analysis of cashflow for trust estimation</div>
+        <svg viewBox="0 0 900 236" role="img" aria-label="Diagram: raw transaction history feeds six pillars — stability, liquidity, diversity, reliability, resilience and volatility — which combine into a single score from 0 to 1000, with contributions that sum exactly to the score.">
+          <defs>
+            <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0 0 L8 4 L0 8 z" fill="#5D6975"></path>
+            </marker>
+          </defs>
+
+          <rect x="1" y="76" width="150" height="60" fill="#10161B" stroke="#1A2027"></rect>
+          <text x="76" y="100" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#E6EAEE">Raw transaction</text>
+          <text x="76" y="117" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#E6EAEE">history</text>
+
+          <line x1="153" y1="106" x2="196" y2="106" stroke="#5D6975" stroke-width="1" marker-end="url(#ah)"></line>
+
+          <rect x="200" y="8" width="128" height="34" fill="#0C1014" stroke="#1A2027"></rect>
+          <text x="264" y="30" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#FFD194">Stability</text>
+          <rect x="200" y="50" width="128" height="34" fill="#0C1014" stroke="#1A2027"></rect>
+          <text x="264" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#FFD194">Liquidity</text>
+          <rect x="200" y="92" width="128" height="34" fill="#0C1014" stroke="#1A2027"></rect>
+          <text x="264" y="114" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#FFD194">Diversity</text>
+          <rect x="200" y="134" width="128" height="34" fill="#0C1014" stroke="#1A2027"></rect>
+          <text x="264" y="156" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#FFD194">Reliability</text>
+          <rect x="200" y="176" width="128" height="34" fill="#0C1014" stroke="#1A2027"></rect>
+          <text x="264" y="198" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#FFD194">Resilience</text>
+          <rect x="340" y="92" width="128" height="34" fill="#0C1014" stroke="#1A2027"></rect>
+          <text x="404" y="114" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#FFD194">Volatility</text>
+
+          <line x1="472" y1="109" x2="524" y2="109" stroke="#5D6975" stroke-width="1" marker-end="url(#ah)"></line>
+
+          <rect x="528" y="70" width="180" height="72" fill="#10161B" stroke="#F56217"></rect>
+          <text x="618" y="98" text-anchor="middle" font-family="Big Shoulders Display, sans-serif" font-size="30" font-weight="600" fill="#F56217">0 — 1000</text>
+          <text x="618" y="120" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#8B96A2">TRUST SCORE</text>
+
+          <line x1="710" y1="106" x2="752" y2="106" stroke="#5D6975" stroke-width="1" marker-end="url(#ah)"></line>
+
+          <rect x="756" y="62" width="142" height="88" fill="#0C1014" stroke="#1A2027"></rect>
+          <text x="827" y="88" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#E6EAEE">Contributions</text>
+          <text x="827" y="106" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#E6EAEE">sum exactly</text>
+          <text x="827" y="124" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#E6EAEE">to the score</text>
+          <text x="827" y="142" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#5D6975">— each links to its</text>
+        </svg>
+      </div>
+      <p class="shot-cap">A structural diagram of the BACTE scoring model, not a screenshot.</p>
+
+      <div class="blocks">
+        <div class="block wide">
+          <h3>Seven capabilities, each answering a failure real users hit</h3>
+          <ul class="keyed">
+            <li><p class="k">Where's My Money</p><p class="v">"It says debited but not received. Where is it?" — a transparency engine that shows which leg of the rail a payment is sitting on, who owns the next action, and a realistic resolution window. Not a spinner.</p></li>
+            <li><p class="k">Dispute &amp; refund tracker</p><p class="v">"I raised a complaint three weeks ago and no one will tell me anything."</p></li>
+            <li><p class="k">Portable KYC credential</p><p class="v">"I did KYC last month. Why am I doing it again?" — issue a credential, grant a lender scoped access, watch the disclosure log, revoke it, watch the read fail.</p></li>
+            <li><p class="k">BACTE credit scoring</p><p class="v">"I earn every day but no bureau score, so no credit." — cashflow-based scoring with no bureau data, no black box and no external model API.</p></li>
+            <li><p class="k">Voice-first, vernacular-first</p><p class="v">"I can speak but I cannot read the form."</p></li>
+            <li><p class="k">Offline-resilient commerce</p><p class="v">"The network drops halfway through a payment." — actions queue as a <em>preparation</em>, never as an executed payment.</p></li>
+            <li><p class="k">Trust layer</p><p class="v">"Every seller has five stars. Which ones are real?" — a trust graph that shows the coordinated review cluster, not just a badge.</p></li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h3>The technical centrepiece</h3>
+          <p>
+            <strong>BACTE</strong> — Behavioural Analysis of Cashflow for Trust Estimation. Six pillars computed
+            from raw transaction history, combined into a 0–1000 score whose contributions
+            <strong>sum exactly to the score</strong>. Open the explanation and each contribution is signed and
+            links back to the transactions behind it.
+          </p>
+          <p>
+            A PDF Transaction Intelligence extension sits on top: upload a bank statement, and the platform
+            extracts, categorises, explains and scores it, reporting rows found, rows parsed, confidence, and what
+            it could not read. Correct one category and the classifier learns from it.
+          </p>
+        </div>
+        <div class="block limits">
+          <h3>Honest limits</h3>
+          <ul>
+            <li>Every external integration — UPI, Account Aggregator, DigiLocker, bank ledger — is a simulated adapter behind a real interface. Screens showing simulated state say so on screen.</li>
+            <li>Model metrics come from synthetic data, so the reported AUC measures internal consistency, not real-world predictive power.</li>
+            <li>PDF extraction is text-layer only. Scanned statements are rejected with an explanation rather than silently producing garbage. No OCR.</li>
+            <li>Voice is offline keyword matching over six intents, not open-ended understanding — it says so when it does not understand instead of guessing.</li>
+            <li>Not a bank, lender, UPI operator or KYC provider; nothing is certified against RBI, UIDAI, NPCI or DPDP requirements, and no such claim is made.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-foot">
+        <ul class="stack">
+          <li>TypeScript</li><li>Python 3.12</li><li>FastAPI</li><li>SQLite / PostgreSQL</li>
+          <li>Docker</li><li>Playwright</li><li>84 endpoints</li>
+        </ul>
+        <a class="repo" href="https://github.com/anxshh007/Behavioral-Analysis-of-Cashflow-for-Trust-Estimation." target="_blank" rel="noopener noreferrer">Repository<span aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="case" id="fasal">
+    <div class="case-body">
+      <div class="case-head">
+        <div class="case-tagrow">
+          <span class="case-role">Team Lead</span>
+          <span class="case-ctx">Smart India Hackathon · Round 1 selection</span>
+        </div>
+        <h2 class="case-title">Fasal Raksha</h2>
+        <p class="case-thesis">
+          AI-assisted farmer–buyer matching, built against a blunt problem: produce goes unsold and spoils because
+          farmers cannot quickly find the right buyer at the right price. A farmer describes a crop — by typing or
+          by speaking — and the platform ranks every buyer in the marketplace by fit. The whole build is
+          <strong>a single self-contained HTML file</strong>: no server, no build step, no install.
+        </p>
+      </div>
+
+      <div class="shot-pair rise">
+        <figure class="shot">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-name">FasalRakshak_1.html — landing</span>
+          </div>
+          <img src="assets/fasal-landing.jpg" alt="Fasal Raksha landing screen: a live matching panel showing a 100 kg wheat listing from Kolkata matched to Sharma Agro Traders at 98 percent." loading="lazy">
+        </figure>
+        <figure class="shot">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-name">FasalRakshak_1.html — farmer verification</span>
+          </div>
+          <img src="assets/fasal-app.jpg" alt="The farmer sign-up form, asking for a full name, mobile number and a government Farmer Verification ID before an account can list crops." loading="lazy">
+        </figure>
+      </div>
+      <p class="shot-cap">Left, the live matching panel. Right, the verification gate that stands between a new account and the ability to list crops.</p>
+
+      <div class="blocks">
+        <div class="block">
+          <h3>How the matching works</h3>
+          <p>
+            <code>matchScore(sell, buy)</code> blends four signals into a single percentage:
+            <strong>crop match</strong> (exact scores highest, partial or synonym moderately),
+            <strong>location match</strong> (same city scores highest), <strong>price fit</strong> (how close the
+            buyer's offer is to the farmer's ask) and <strong>quantity fit</strong> (how well supply and demand
+            line up). Scores are clamped to a realistic 55–98% band and used to rank buyers for farmers, and
+            listings for buyers. Nothing is hardcoded.
+          </p>
+        </div>
+        <div class="block">
+          <h3>Voice, in four languages</h3>
+          <p>
+            The mic button uses the browser's native Web Speech API. Recognition language follows the farmer's
+            selection — English <code>en-IN</code>, Hindi <code>hi-IN</code>, Bengali <code>bn-IN</code>, Punjabi
+            <code>pa-IN</code> — and transcribed text appends live into the message box as they speak. The same
+            language selector drives the text parser. If the browser has no speech support or the mic is denied,
+            it says so rather than failing silently.
+          </p>
+        </div>
+        <div class="block">
+          <h3>Verification, and its boundary</h3>
+          <p>
+            A farmer must verify a government-issued Farmer Verification ID before they can list crops. A match
+            returns the registered name, district and state for confirmation; a non-match is rejected with a clear
+            explanation.
+          </p>
+          <p>
+            Because this build is a static offline file, that check runs against a <strong>bundled mock
+            registry</strong> — it does not call a real government system, and the README says so plainly. The
+            code is commented at the integration point with the intended production flow: the browser should never
+            hold a government API key.
+          </p>
+        </div>
+        <div class="block limits">
+          <h3>Honest limits</h3>
+          <ul>
+            <li>No real backend — all data is local to the browser via <code>localStorage</code>.</li>
+            <li>Farmer ID verification checks a demo dataset, not a real government database.</li>
+            <li>No password or OTP security; sign-in matches a Farmer ID and phone number against a local record.</li>
+            <li>Voice depends on Web Speech API support — best in Chrome, limited or absent in Safari and Firefox.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-foot">
+        <ul class="stack">
+          <li>JavaScript</li><li>Web Speech API</li><li>Groq (optional)</li><li>localStorage</li><li>Single file</li><li>Offline-first</li>
+        </ul>
+        <a class="repo" href="https://github.com/anxshh007/Fasal-Raksha-AI-Assisted-Farmer-Buyer-Matching-Platform" target="_blank" rel="noopener noreferrer">Repository<span aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="case" id="reticle">
+    <div class="case-body">
+      <div class="case-head">
+        <div class="case-tagrow">
+          <span class="case-role">Game AI · Computer vision</span>
+          <span class="case-ctx">Generalised m,n,k engine</span>
+        </div>
+        <h2 class="case-title">RETICLE</h2>
+        <p class="case-thesis">
+          Tic-Tac-Toe generalised into an <strong>m,n,k engine you play with your hands</strong>. Set the grid size
+          and the win-streak length, then play a human or the AI — with live win-probability distributions on every
+          turn and touchless control through a standard webcam.
+        </p>
+      </div>
+
+      <div class="shot-pair rise">
+        <figure class="shot">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-name">RETICLE — opening position</span>
+          </div>
+          <img src="assets/reticle-landing.jpg" alt="RETICLE at the opening position on a 3 by 3 board: the win-probability bar reads X win 58.5 percent, draw 12.7 percent, O win 28.8 percent." loading="lazy">
+        </figure>
+        <figure class="shot">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-name">RETICLE — three moves in</span>
+          </div>
+          <img src="assets/reticle-app.jpg" alt="The same board three moves in, two X and one O placed; the probability bar has moved to X win 56.1 percent, draw 15.0 percent, O win 28.9 percent." loading="lazy">
+        </figure>
+      </div>
+      <p class="shot-cap">The same game, three moves apart — the probability bar recomputes from exact enumeration on every turn, which is why it moves from 58.5% to 56.1%.</p>
+
+      <div class="blocks">
+        <div class="block">
+          <h3>The probability engine</h3>
+          <p>
+            On <strong>3×3 boards with K=3</strong>, it performs exact recursive enumeration across all valid game
+            branches — the win, draw and loss probabilities it shows are exact, not estimated.
+          </p>
+          <p>
+            On <strong>N ≥ 4</strong>, exact search stops being tractable, so it runs Monte Carlo rollouts —
+            300 to 800 iterations per move — to approximate the same distribution in real time.
+          </p>
+        </div>
+        <div class="block">
+          <h3>The opponent</h3>
+          <p>
+            The AI switches strategy on the same boundary. <strong>3×3</strong> uses minimax with alpha–beta
+            pruning, which guarantees optimal play. <strong>N ≥ 4</strong> uses heuristic-guided Monte Carlo Tree
+            Search: it checks immediate wins and blocks first, then runs heuristic candidate rollouts to find the
+            highest-value tactical move.
+          </p>
+        </div>
+        <div class="block wide">
+          <h3>Hands-free control</h3>
+          <ul class="keyed">
+            <li><p class="k">Index tip</p><p class="v">Moves the virtual reticle cursor across the board, tracked by MediaPipe Hands.</p></li>
+            <li><p class="k">Pinch (thumb + index)</p><p class="v">Instant cell selection.</p></li>
+            <li><p class="k">Dwell (1.0s hold)</p><p class="v">Hover over a cell for one second to select it — the fallback when pinch detection is unreliable.</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-foot">
+        <ul class="stack">
+          <li>JavaScript ES6+</li><li>MediaPipe Hands</li><li>Minimax</li><li>Alpha–beta</li><li>MCTS</li><li>SVG</li>
+        </ul>
+        <a class="repo" href="https://github.com/anxshh007/Tic-Tac-Toe-" target="_blank" rel="noopener noreferrer">Repository<span aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="case" id="nivesh">
+    <div class="case-body">
+      <div class="case-head">
+        <div class="case-tagrow">
+          <span class="case-role">Dashboard · Indian equities</span>
+          <span class="case-ctx">Educational · virtual capital only</span>
+        </div>
+        <h2 class="case-title">Nivesh Analyser</h2>
+        <p class="case-thesis">
+          An investment-learning and stock-analysis dashboard for the Indian market. Explore listed companies,
+          evaluate historical performance, and practise portfolio management with
+          <strong>₹10,00,000 of virtual capital</strong> — learning the concepts before any real money is at risk.
+        </p>
+      </div>
+
+      <div class="shot-pair rise">
+        <figure class="shot">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-name">nivesh-analyser_6.html — landing</span>
+          </div>
+          <img src="assets/nivesh-landing.jpg" alt="Nivesh Analyser landing view with a live NSE and BSE ticker and headline stats: 2,140-plus stocks tracked, 10 lakh demo capital, Nifty 50 up 14.2 percent over one year." loading="lazy">
+        </figure>
+        <figure class="shot">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-name">nivesh-analyser_6.html — demo trading</span>
+          </div>
+          <img src="assets/nivesh-app.jpg" alt="The demo trading screen: a cash balance and portfolio value of 10,00,000 rupees, a searchable stock list with buy and sell controls, and an empty holdings table." loading="lazy">
+        </figure>
+      </div>
+      <p class="shot-cap">Right, a fresh demo account — ₹10,00,000 in virtual capital, no holdings yet.</p>
+
+      <div class="blocks">
+        <div class="block wide">
+          <h3>Six tools in one dashboard</h3>
+          <ul class="keyed">
+            <li><p class="k">Historical calculator</p><p class="v">Pick a listed stock and a date up to five years back, enter an amount, and see what a lump sum or a monthly SIP would be worth today.</p></li>
+            <li><p class="k">Mutual fund calculator</p><p class="v">Model SIP or lump-sum investments against an expected annual return, split between invested amount and growth.</p></li>
+            <li><p class="k">Stock analysis</p><p class="v">Plain-language summaries of fundamentals, recent developments, pros and cons, probability-based outlooks and simplified signals.</p></li>
+            <li><p class="k">Market overview</p><p class="v">Headline indices and the stocks driving movement — sector, current price, daily change and one-year CAGR.</p></li>
+            <li><p class="k">Weighted average</p><p class="v">Enter multiple purchase quantities and prices for the same stock to find your true average cost.</p></li>
+            <li><p class="k">Virtual portfolio</p><p class="v">Start with ₹10,00,000 in demo capital, buy and sell at live-style prices, track holdings and paper P&amp;L, reset any time.</p></li>
+          </ul>
+        </div>
+        <div class="block limits wide">
+          <h3>Stated plainly, on the page and in the README</h3>
+          <ul>
+            <li>All projections, signals and outlooks are for educational and simulation purposes only.</li>
+            <li>Nothing in it constitutes financial advice, and actual market performance may differ significantly.</li>
+            <li>No real capital is ever involved — the portfolio is virtual and resettable.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-foot">
+        <ul class="stack">
+          <li>JavaScript</li><li>HTML</li><li>CSS</li><li>Single file</li><li>Client-side</li>
+        </ul>
+        <a class="repo" href="https://github.com/anxshh007/Nivesh-Analyser" target="_blank" rel="noopener noreferrer">Repository<span aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="case" id="lens">
+    <div class="case-body">
+      <div class="case-head">
+        <div class="case-tagrow">
+          <span class="case-role">Client-side auditor</span>
+          <span class="case-ctx">Single-file demo build</span>
+        </div>
+        <h2 class="case-title">OpportunityLens AI</h2>
+        <p class="case-thesis">
+          An automated eligibility auditor and candidate-opportunity matcher. Point it at a scholarship,
+          internship or hackathon and it returns <strong>structured, evidence-based feedback</strong> on whether an
+          applicant is actually ready — what qualifies them, and what does not. Runs entirely client-side.
+        </p>
+      </div>
+
+      <div class="shot-pair rise">
+        <figure class="shot">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-name">opportunitylens-demo.html — input</span>
+          </div>
+          <img src="assets/lens-landing.jpg" alt="The OpportunityLens input screen: three demo presets, and two panes for pasting a student profile and an opportunity description." loading="lazy">
+        </figure>
+        <figure class="shot">
+          <div class="shot-bar">
+            <span class="shot-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="shot-name">opportunitylens-demo.html — verdict</span>
+          </div>
+          <img src="assets/lens-app.jpg" alt="An eligibility verdict: criteria rows marked Met, Uncertain and Unmet, each quoting the line of the profile it was judged on, followed by key strengths, critical gaps and a remediation roadmap." loading="lazy">
+        </figure>
+      </div>
+      <p class="shot-cap">Right is a run of the bundled <em>Global AI Hackathon</em> preset — every criterion marked Met, Uncertain or Unmet quotes the line of the profile it was judged on.</p>
+
+      <div class="blocks">
+        <div class="block">
+          <h3>What it is for</h3>
+          <p>
+            Students lose weeks applying to things they were never eligible for, because the criteria are buried in
+            a PDF. Paste a profile and an opportunity description and it returns a verdict per criterion —
+            <strong>Met</strong>, <strong>Uncertain</strong> or <strong>Unmet</strong> — and each one quotes the
+            line of the profile it was judged on, so the reasoning is inspectable rather than asserted.
+          </p>
+          <p>
+            Underneath the criteria table it separates <strong>key strengths</strong> from <strong>critical
+            gaps</strong>, then lays out a remediation roadmap split into immediate, short-term and long-term
+            work. The point is not a yes or no — it is knowing which gap to close first.
+          </p>
+        </div>
+        <div class="block">
+          <h3>Why client-side matters here</h3>
+          <p>
+            Everything runs in the browser. Nobody's academic record, age, income bracket or application history
+            leaves their machine to get a readiness check — which is the right default for a tool whose input is a
+            complete personal profile.
+          </p>
+          <p>
+            Three demo presets ship with it, so the tool can be evaluated without anyone pasting real details in.
+          </p>
+        </div>
+        <div class="block limits wide">
+          <h3>Honest limits</h3>
+          <ul>
+            <li>The build says it on its own footer: verdicts are <strong>simulated guidance, not a guarantee of admission or award</strong>.</li>
+            <li>The repository ships a single demo HTML file with <strong>no README</strong>.</li>
+            <li>A demo build rather than a maintained product, and the opportunity set is bundled rather than live.</li>
+            <li>The earliest of the six projects, and the least developed.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-foot">
+        <ul class="stack">
+          <li>JavaScript</li><li>HTML</li><li>Rules engine</li><li>Client-side</li>
+        </ul>
+        <a class="repo" href="https://github.com/anxshh007/OpportunityLens-AI" target="_blank" rel="noopener noreferrer">Repository<span aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="tail">
+    <h2>That's all six</h2>
+    <p>
+      Every repository above is public, and four of the six run from a single file you can download and open
+      without installing anything. If you want to talk about any of them, the contact details are back on the
+      portfolio.
+    </p>
+    <a class="back-home" href="index.html">← Back to the portfolio</a>
+
+    <div class="foot">
+      <span>Angshuman Bhagat · Kolkata, India</span>
+      <span>Case files · 2026</span>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var bodies = Array.prototype.slice.call(document.querySelectorAll(".case-body"));
+  var risers = Array.prototype.slice.call(document.querySelectorAll(".rise"));
+  var gauge = document.getElementById("gauge");
+  var railpct = document.getElementById("railpct");
+  var topbar = document.getElementById("topbar");
+  var marker = document.getElementById("railmarker");
+  var links = Array.prototype.slice.call(document.querySelectorAll("#railnav a"));
+  var sections = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+
+  function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+  function smooth(t) { return t * t * (3 - 2 * t); }
+
+  var lastActive = -1;
+
+  function frame() {
+    var vh = window.innerHeight || 1;
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+    var max = Math.max(1, document.documentElement.scrollHeight - vh);
+    var p = clamp(y / max, 0, 1);
+    if (gauge) { gauge.style.width = (p * 100).toFixed(2) + "%"; }
+    if (topbar) { topbar.style.transform = "scaleX(" + p.toFixed(4) + ")"; }
+    if (railpct) {
+      var pct = Math.round(p * 100);
+      railpct.textContent = pct < 10 ? "0" + pct : String(pct);
+    }
+
+    var activeIdx = 0;
+    for (var s = 0; s < sections.length; s++) {
+      if (sections[s] && sections[s].getBoundingClientRect().top <= vh * 0.4) { activeIdx = s; }
+    }
+    if (activeIdx !== lastActive) {
+      lastActive = activeIdx;
+      for (var l = 0; l < links.length; l++) {
+        if (l === activeIdx) { links[l].setAttribute("aria-current", "true"); }
+        else { links[l].removeAttribute("aria-current"); }
+      }
+      if (marker && links[activeIdx]) {
+        var a = links[activeIdx];
+        marker.style.setProperty("--marker-y", (a.offsetTop + a.offsetHeight / 2) + "px");
+        marker.style.opacity = "1";
+      }
+    }
+
+    if (reduce) { return; }
+
+    for (var i = 0; i < bodies.length; i++) {
+      var el = bodies[i];
+      var r = el.getBoundingClientRect();
+      if (r.bottom < -vh * 0.6 || r.top > vh * 1.6) { continue; }
+      var d = ((r.top + r.height / 2) - vh / 2) / vh;
+      var e = smooth(clamp(Math.abs(d), 0, 1));
+
+      if (e < 0.02) {                                   /* effectively centred: detach */
+        if (el.classList.contains("tilting")) {
+          el.classList.remove("tilting");
+          el.style.removeProperty("--z");
+          el.style.removeProperty("--o");
+        }
+        continue;
+      }
+      if (!el.classList.contains("tilting")) { el.classList.add("tilting"); }
+
+      el.style.setProperty("--z", (d > 0 ? 1 - e * 0.08 : 1 + e * 0.04).toFixed(4));
+      el.style.setProperty("--o", (1 - e * 0.38).toFixed(3));
+    }
+
+    for (var k = 0; k < risers.length; k++) {
+      var it = risers[k];
+      var ir = it.getBoundingClientRect();
+      if (ir.bottom < 0 || ir.top > vh * 1.35) { continue; }
+      var t = clamp((vh * 0.94 - ir.top) / (vh * 0.40), 0, 1);
+      var q = smooth(t);
+      it.style.setProperty("--ry", ((1 - q) * 22).toFixed(2) + "px");
+      it.style.setProperty("--ro", (0.55 + q * 0.45).toFixed(3));
+    }
+  }
+
+  var queued = false;
+  function onScroll() {
+    if (queued) { return; }
+    queued = true;
+    window.requestAnimationFrame(function () { queued = false; frame(); });
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  frame();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Not found — Angshuman Bhagat</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%276%27%20fill%3D%27%2307090C%27/%3E%3Cpath%20d%3D%27M16%206.5%20L24.8%2025.5%20H20.6%20L16%2015.2%20L11.4%2025.5%20H7.2%20Z%27%20fill%3D%27%23F56217%27/%3E%3C/svg%3E">
+<meta name="theme-color" content="#07090C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&display=swap">
+<style>
+:root{
+  --ink:#07090C; --rule:#1A2027; --text:#E6EAEE; --dim:#8B96A2; --dimmer:#5D6975; --ember:#F56217;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --body:"Instrument Sans",ui-sans-serif,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
+  --disp:"Big Shoulders Display","Oswald","Arial Narrow",var(--body);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; background:var(--ink); color:var(--text);
+  font-family:var(--body); font-size:15.5px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  display:flex; align-items:center;
+  padding:clamp(28px,7vw,80px);
+}
+a{color:inherit}
+:where(a):focus-visible{outline:2px solid var(--ember); outline-offset:3px}
+.wrap{max-width:640px}
+.label{
+  font-family:var(--mono); font-size:10.5px; font-weight:500;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--dimmer);
+}
+h1{
+  font-family:var(--disp); font-weight:800; text-transform:uppercase;
+  font-size:clamp(64px,15vw,150px); line-height:.84; letter-spacing:.004em;
+  margin:18px 0 0;
+}
+h1 span{display:block; color:transparent; -webkit-text-stroke:1.2px var(--dimmer)}
+p{max-width:46ch; color:var(--dim); font-size:16.5px; margin:24px 0 0}
+.home{
+  display:inline-flex; align-items:center; gap:10px; margin-top:34px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--text); text-decoration:none;
+  border:1px solid var(--rule); padding:12px 18px;
+  transition:border-color .25s ease,color .25s ease,gap .3s var(--ease);
+}
+.home:hover{border-color:var(--ember); color:var(--ember); gap:14px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="label">Error 404</div>
+    <h1>Not<span>Found</span></h1>
+    <p>That page doesn't exist. It may have been renamed, or the link may be incomplete.</p>
+    <a class="home" href="/">← Back to the portfolio</a>
+  </div>
+</body>
+</html>
