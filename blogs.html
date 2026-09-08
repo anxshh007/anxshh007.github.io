@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Blogs — study material and written notes. Study Mats for Stanford CS229: full-derivation guides to lectures 1, 2 and 3, each a self-contained offline page with its own interactive figures.">
+
+<meta name="author" content="Angshuman Bhagat">
+<meta name="theme-color" content="#07090C">
+<link rel="canonical" href="https://anxshh007.github.io/blogs.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2032%2032%27%3E%3Crect%20width%3D%2732%27%20height%3D%2732%27%20rx%3D%276%27%20fill%3D%27%2307090C%27%2F%3E%3Cpath%20d%3D%27M16%206.5%20L24.8%2025.5%20H20.6%20L16%2015.2%20L11.4%2025.5%20H7.2%20Z%27%20fill%3D%27%23F56217%27%2F%3E%3C%2Fsvg%3E">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Angshuman Bhagat">
+<meta property="og:title" content="Blogs — Angshuman Bhagat">
+<meta property="og:description" content="Study Mats for Stanford CS229 — three lectures worked through in full, each one a self-contained offline page with its own interactive figures.">
+<meta property="og:url" content="https://anxshh007.github.io/blogs.html">
+<meta property="og:image" content="https://anxshh007.github.io/assets/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Angshuman Bhagat — data and applied-AI engineer, Kolkata, India.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blogs — Angshuman Bhagat">
+<meta name="twitter:description" content="Study Mats for Stanford CS229 — three lectures worked through in full, each one a self-contained offline page.">
+<meta name="twitter:image" content="https://anxshh007.github.io/assets/og-card.jpg">
+
+<title>Blogs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* ============================================================
+   Blogs — the same instrument-console world as the portfolio
+   index and the case files, arranged as a shelf rather than a
+   long read. Every token below is one the other two pages
+   already declare; nothing here invents a new colour.
+   ============================================================ */
+:root{
+  --ink:        #07090C;
+  --ink-2:      #0C1014;
+  --ink-3:      #10161B;
+  --rule:       #1A2027;
+  --rule-soft:  #141A20;
+  --text:       #E6EAEE;
+  --dim:        #8B96A2;
+  --dimmer:     #5D6975;
+  --ember:      #F56217;
+  --sand:       #FFD194;
+  --petrol:     #3E8FB8;
+  --live:       #35D07F;
+
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --body: "Instrument Sans", ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial, sans-serif;
+  --disp: "Big Shoulders Display", "Oswald", "Arial Narrow", var(--body);
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --rail: 226px;
+  --gut: clamp(20px, 5vw, 64px);
+  --measure: 70ch;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: clip; }
+
+body{
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15.5px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+a { color: inherit; }
+::selection { background: var(--ember); color: #07090C; }
+:where(a, button, [tabindex]):focus-visible{
+  outline: 2px solid var(--ember);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.label{
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--dimmer);
+}
+
+/* ---------- motion ---------- */
+@keyframes riseIn{
+  from{ opacity: .35; transform: translateY(12px); }
+  to  { opacity: 1;   transform: none; }
+}
+@keyframes maskRise{
+  from{ transform: translateY(102%); }
+  to  { transform: translateY(0); }
+}
+.reveal{ animation: riseIn .62s var(--ease) both; animation-delay: var(--d, 0s); }
+.rise{ transform: translateY(var(--ry, 0px)); opacity: var(--ro, 1); }
+
+/* ============================================================
+   Rail
+   ============================================================ */
+.rail{
+  position: fixed; inset: 0 auto 0 0; width: var(--rail);
+  padding: 34px 0 30px var(--gut);
+  display: none; flex-direction: column; justify-content: space-between;
+  z-index: 40;
+  border-right: 1px solid var(--rule-soft);
+  background: linear-gradient(90deg, var(--ink) 70%, transparent);
+}
+.rail-top{ display: flex; flex-direction: column; gap: 26px; }
+.rail-back{
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); text-decoration: none;
+  transition: color .25s ease, gap .3s var(--ease);
+}
+.rail-back:hover{ color: var(--ember); gap: 12px; }
+
+.rail-navwrap{ position: relative; }
+.rail-marker{
+  position: absolute; left: 0; top: 0; width: 22px; height: 1px;
+  background: var(--ember); box-shadow: 0 0 8px var(--ember);
+  opacity: 0;
+  transform: translateY(var(--marker-y, 0px));
+  transition: transform .42s var(--ease), opacity .3s ease;
+  pointer-events: none;
+}
+.rail-nav{ display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.rail-nav a{
+  display: grid; grid-template-columns: 22px 1fr; align-items: center; gap: 8px;
+  padding: 4px 0;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dimmer); text-decoration: none;
+  transition: color .25s ease, transform .3s var(--ease);
+}
+.rail-nav a::before{
+  content: ""; height: 1px; width: 10px; background: currentColor;
+  transition: width .3s var(--ease);
+}
+.rail-nav a:hover{ color: var(--dim); transform: translateX(3px); }
+.rail-nav a[aria-current="true"]{ color: var(--text); }
+.rail-nav a[aria-current="true"]::before{ width: 22px; }
+/* The three lectures read as children of the collection above them. */
+.rail-nav .sub a{ padding-left: 14px; font-size: 10.5px; }
+
+.rail-foot{ display: flex; flex-direction: column; gap: 10px; }
+.rail-gauge{ height: 2px; width: 118px; background: var(--rule); overflow: hidden; }
+.rail-gauge i{ display: block; height: 100%; width: 0%; background: var(--ember); }
+.rail-pct{ font-variant-numeric: tabular-nums; }
+
+@media (min-width: 1080px){ .rail{ display: flex; } }
+
+.topbar{
+  position: fixed; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--ember); transform-origin: 0 50%; transform: scaleX(0); z-index: 60;
+}
+@media (min-width: 1080px){ .topbar{ display: none; } }
+
+/* ============================================================
+   Shell
+   ============================================================ */
+.shell{ margin-left: 0; padding: 0 var(--gut); max-width: 1180px; }
+@media (min-width: 1080px){
+  .shell{ margin-left: var(--rail); padding-right: clamp(24px, 6vw, 90px); }
+}
+
+.mobile-back{
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 26px 0 0;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); text-decoration: none;
+  border-bottom: 1px solid var(--rule); padding-bottom: 4px;
+}
+.mobile-back:hover{ color: var(--ember); border-color: var(--ember); }
+@media (min-width: 1080px){ .mobile-back{ display: none; } }
+
+/* ============================================================
+   Masthead
+   ============================================================ */
+.masthead{ padding: clamp(46px, 8vh, 92px) 0 clamp(40px, 6vw, 66px); }
+.mast-title{
+  font-family: var(--disp); font-weight: 800; text-transform: uppercase;
+  font-size: clamp(46px, 9.5vw, 122px); line-height: .86; letter-spacing: .004em;
+  margin: 20px 0 0;
+}
+.mast-title .line{ display: block; overflow: hidden; padding-bottom: .04em; }
+.mast-title .line i{
+  display: block; font-style: normal;
+  animation: maskRise .82s var(--ease) both; animation-delay: var(--d, 0s);
+}
+.mast-title .n2 i{ color: transparent; -webkit-text-stroke: 1.2px var(--dimmer); }
+
+.mast-lede{
+  max-width: var(--measure); color: var(--dim);
+  font-size: 17px; line-height: 1.65; margin: 30px 0 0;
+}
+.mast-lede strong{ color: var(--text); font-weight: 500; }
+
+.mast-meta{
+  display: flex; flex-wrap: wrap; gap: 10px 28px;
+  margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--rule);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--dimmer);
+}
+.mast-meta b{ color: var(--text); font-weight: 500; }
+
+/* ============================================================
+   A shelf — one top-level category of writing
+   ============================================================ */
+.case{ padding: clamp(56px, 8vw, 100px) 0; border-top: 1px solid var(--rule); }
+/* A shelf that is centred and being read carries no transform and no
+   will-change, so its type renders unpromoted and crisp. The depth effect
+   attaches only while the section is actually moving. */
+.case-body{ transform-origin: 50% 42%; }
+.case-body.tilting{
+  transform: scale(var(--z, 1));
+  opacity: var(--o, 1);
+  will-change: transform, opacity;
+}
+
+.case-head{ display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+.case-tagrow{ display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; }
+.case-role{
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ember);
+}
+.case-ctx{
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--dimmer);
+}
+.case-title{
+  font-family: var(--disp); font-weight: 600; text-transform: uppercase;
+  font-size: clamp(38px, 6.4vw, 74px); line-height: .92; letter-spacing: .008em;
+  margin: 0;
+}
+.case-thesis{
+  max-width: var(--measure); color: var(--dim);
+  font-size: 17px; line-height: 1.62; margin: 6px 0 0;
+}
+.case-thesis strong{ color: var(--text); font-weight: 500; }
+
+/* ---------- prose blocks, as on the case-file page ---------- */
+.blocks{ display: grid; gap: 1px; background: var(--rule-soft); margin-top: 38px; }
+@media (min-width: 860px){ .blocks{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.block{ background: var(--ink); padding: 22px 22px 24px; }
+.block h3{
+  margin: 0 0 10px;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--dimmer);
+}
+.block p{ margin: 0 0 12px; color: var(--dim); }
+.block p:last-child{ margin-bottom: 0; }
+.block strong{ color: var(--text); font-weight: 500; }
+.block.wide{ grid-column: 1 / -1; }
+
+.keyed{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; background: var(--rule-soft); }
+.keyed li{ background: var(--ink); display: grid; gap: 2px 20px; padding: 11px 0; }
+@media (min-width: 620px){ .keyed li{ grid-template-columns: 190px minmax(0,1fr); align-items: baseline; } }
+.keyed .k{
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .03em;
+  color: var(--text); margin: 0;
+}
+.keyed .v{ color: var(--dim); font-size: 14px; margin: 0; }
+
+/* ============================================================
+   A collection — one course, one shelf of study material
+   ============================================================ */
+.collection{
+  margin-top: clamp(44px, 6vw, 70px);
+  padding-top: clamp(28px, 4vw, 42px);
+  border-top: 1px solid var(--rule);
+}
+.coll-head{ display: flex; flex-direction: column; gap: 11px; }
+.coll-tagrow{ display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; }
+.coll-title{
+  font-family: var(--disp); font-weight: 600; text-transform: uppercase;
+  font-size: clamp(27px, 4.2vw, 46px); line-height: .98; letter-spacing: .008em;
+  margin: 0;
+}
+.coll-lede{ max-width: var(--measure); color: var(--dim); margin: 4px 0 0; }
+.coll-lede strong{ color: var(--text); font-weight: 500; }
+.coll-meta{
+  display: flex; flex-wrap: wrap; gap: 10px 28px;
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--rule-soft);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--dimmer);
+}
+.coll-meta b{ color: var(--text); font-weight: 500; }
+
+/* ---------- one study mat ---------- */
+.mats{ list-style: none; margin: 30px 0 0; padding: 0; display: flex; flex-direction: column; }
+.mat{
+  position: relative;
+  display: grid;
+  gap: 16px 30px;
+  padding: 30px 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.mat:first-child{ border-top: 0; }
+@media (min-width: 880px){
+  .mat{ grid-template-columns: 218px minmax(0,1fr); align-items: start; }
+}
+/* Hover lights an ember rail down the left edge, exactly as a project row does. */
+.mat::before{
+  content: "";
+  position: absolute; left: -18px; top: 30px; bottom: 30px;
+  width: 1px; background: var(--ember);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform .45s var(--ease);
+}
+.mat:hover::before{ transform: scaleY(1); }
+
+.mat-key{ display: flex; flex-direction: column; gap: 10px; }
+.mat-no{
+  font-family: var(--disp); font-weight: 800;
+  font-size: 52px; line-height: .82; letter-spacing: .01em;
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  -webkit-text-stroke: 1.1px var(--dimmer);
+  transition: -webkit-text-stroke-color .35s ease;
+}
+.mat:hover .mat-no{ -webkit-text-stroke-color: var(--ember); }
+.mat-course{
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ember);
+}
+
+.mat-title{
+  font-family: var(--disp); font-weight: 600; text-transform: uppercase;
+  font-size: clamp(23px, 3vw, 30px); line-height: 1.02; letter-spacing: .01em;
+  margin: 0 0 10px;
+  transition: color .3s ease, transform .4s var(--ease);
+}
+.mat:hover .mat-title{ color: var(--sand); transform: translateX(4px); }
+.mat p{ margin: 0; color: var(--dim); max-width: var(--measure); }
+.mat p + p{ margin-top: 11px; }
+
+/* The readout strip: what is actually inside the file. */
+.mat-facts{
+  list-style: none; margin: 18px 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 1px; background: var(--rule-soft);
+  border: 1px solid var(--rule-soft);
+}
+@media (min-width: 640px){ .mat-facts{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
+.mat-facts li{ background: var(--ink); padding: 11px 13px 12px; transition: background .35s ease; }
+.mat:hover .mat-facts li{ background: var(--ink-2); }
+.mat-facts b{
+  display: block;
+  font-family: var(--disp); font-weight: 600;
+  font-size: 25px; line-height: 1; letter-spacing: .01em;
+  font-variant-numeric: tabular-nums; color: var(--text);
+}
+.mat-facts small{
+  display: block; margin-top: 6px;
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--dimmer); line-height: 1.55;
+}
+
+.mat-foot{ display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 18px; }
+.topics{ display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.topics li{
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .05em;
+  color: var(--dimmer); border: 1px solid var(--rule); padding: 3px 8px;
+  transition: color .3s ease, border-color .3s ease;
+}
+.mat:hover .topics li{ color: var(--dim); border-color: #232C34; }
+
+/* Open link: the underline sweeps in from the left, as on every other page.
+   The arrow points sideways rather than out, because this one stays on-site. */
+.open{
+  position: relative;
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em;
+  color: var(--text); text-decoration: none; padding-bottom: 3px;
+  transition: color .25s ease;
+}
+.open::before{
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: #F5621766;
+}
+.open::after{ content: "→"; font-size: 12px; color: var(--ember); transition: transform .3s var(--ease); }
+.open span{
+  position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+  background: var(--ember); transform: scaleX(0); transform-origin: left;
+  transition: transform .4s var(--ease);
+}
+.open:hover{ color: var(--ember); }
+.open:hover span{ transform: scaleX(1); }
+.open:hover::after{ transform: translateX(4px); }
+
+/* ============================================================
+   Tail
+   ============================================================ */
+.tail{ padding: clamp(56px, 8vw, 96px) 0 clamp(70px, 10vw, 120px); border-top: 1px solid var(--rule); }
+.tail h2{
+  font-family: var(--disp); font-weight: 600; text-transform: uppercase;
+  font-size: clamp(30px, 4.4vw, 46px); line-height: .98; margin: 0 0 18px;
+}
+.tail p{ max-width: var(--measure); color: var(--dim); margin: 0 0 26px; }
+.back-home{
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text); text-decoration: none;
+  border: 1px solid var(--rule); padding: 12px 18px;
+  transition: border-color .25s ease, color .25s ease, gap .3s var(--ease);
+}
+.back-home:hover{ border-color: var(--ember); color: var(--ember); gap: 14px; }
+
+.foot{
+  margin-top: clamp(48px, 7vw, 76px); padding-top: 18px; border-top: 1px solid var(--rule);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--dimmer);
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  .case-body, .case-body.tilting{ transform: none !important; opacity: 1 !important; will-change: auto; }
+  .rise{ transform: none !important; opacity: 1 !important; }
+  .reveal, .mast-title .line i{ animation: none !important; }
+  *{ transition-duration: .01ms !important; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="topbar" id="topbar" aria-hidden="true"></div>
+
+<aside class="rail" aria-label="Blog navigation">
+  <div class="rail-top">
+    <a class="rail-back" href="index.html">← Portfolio</a>
+    <nav class="rail-navwrap">
+      <span class="rail-marker" id="railmarker" aria-hidden="true"></span>
+      <ul class="rail-nav" id="railnav">
+        <li><a href="#studymats">Study Mats</a></li>
+        <li><a href="#cs229">CS229</a></li>
+        <li class="sub"><a href="#lec1">Lecture 1</a></li>
+        <li class="sub"><a href="#lec2">Lecture 2</a></li>
+        <li class="sub"><a href="#lec3">Lecture 3</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="rail-foot">
+    <div class="rail-gauge" aria-hidden="true"><i id="gauge"></i></div>
+    <div class="label"><span class="rail-pct" id="railpct">00</span>% · 3 study mats</div>
+  </div>
+</aside>
+
+<main class="shell">
+
+  
+  <header class="masthead">
+    <a class="mobile-back" href="index.html">← Portfolio</a>
+    <div class="label reveal" style="--d:.05s; margin-top:22px">Angshuman Bhagat · Blogs</div>
+    <h1 class="mast-title">
+      <span class="line"><i style="--d:.12s">Written</i></span>
+      <span class="line n2"><i style="--d:.22s">Down</i></span>
+    </h1>
+    <p class="mast-lede reveal" style="--d:.42s">
+      What I am reading, worked all the way through. The first collection is <strong>study material for
+      Stanford CS229</strong> — one page per lecture, each carrying its own mathematics, figures and
+      interactive demonstrations, and each one <strong>a single file that works with the network off</strong>.
+    </p>
+    <div class="mast-meta reveal" style="--d:.52s">
+      <span><b>01</b> collection</span>
+      <span><b>03</b> study mats</span>
+      <span>Self-contained · offline</span>
+      <span>2026 — ongoing</span>
+    </div>
+  </header>
+
+  
+  <section class="case" id="studymats">
+    <div class="case-body">
+      <div class="case-head">
+        <div class="case-tagrow">
+          <span class="case-role">Study Mats</span>
+          <span class="case-ctx">Course notes · worked derivations · interactive figures</span>
+        </div>
+        <h2 class="case-title">Study Mats</h2>
+        <p class="case-thesis">
+          Notes I write while working through a course, built to the standard I actually want to revise from:
+          every step of every derivation present, <strong>nothing asserted without proof</strong>, and a figure
+          you can move wherever a static picture would have hidden the idea.
+        </p>
+      </div>
+
+      <div class="blocks">
+        <div class="block">
+          <h3>How each page is built</h3>
+          <p>
+            One lecture, one HTML file. The mathematics is typeset <strong>inside the document</strong> — no
+            script fetched at load, no rendering pass to wait through. The fonts, the figures and the demos are
+            all embedded, which is why the files are large and why they open on a laptop with no connection, in
+            a room with bad Wi-Fi, or on a phone underground.
+          </p>
+          <p>
+            Nothing is pulled from a CDN and nothing phones home. Save the file and you keep the whole guide.
+          </p>
+        </div>
+        <div class="block">
+          <h3>What is in one</h3>
+          <p>
+            A sixty-second map of the lecture, the notation before it is needed, then the body of the lecture
+            worked out in full. After that: a cheat sheet, <strong>practice problems with complete
+            solutions</strong>, exam and interview questions, and a list of the specific things students get
+            wrong on this material.
+          </p>
+          <p>
+            Each guide names its sources, so any claim in it can be traced back to the lecture or the published
+            course notes it came from.
+          </p>
+        </div>
+
+        <div class="block wide">
+          <h3>The conventions every guide follows</h3>
+          <ul class="keyed">
+            <li>
+              <p class="k">Derivations in full</p>
+              <p class="v">Where the lecture says "it can be shown", the guide shows it. Skipped algebra is the reason a step stops making sense three weeks later.</p>
+            </li>
+            <li>
+              <p class="k">Figures you can move</p>
+              <p class="v">Drag a point, pull a slider, watch the fit change. Every interactive figure is drawn on a canvas in the page itself, with no library behind it.</p>
+            </li>
+            <li>
+              <p class="k">Solutions hidden, not omitted</p>
+              <p class="v">Problems sit above collapsed solutions, so a guide works as practice first and as a reference second. Printing opens them all, then puts them back.</p>
+            </li>
+            <li>
+              <p class="k">Readable in either theme</p>
+              <p class="v">Light, auto and dark. Lectures 1 and 3 carry the switch on the page; lecture 2 follows whatever the system is set to.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      
+      <div class="collection" id="cs229">
+        <div class="coll-head">
+          <div class="coll-tagrow">
+            <span class="case-role">Collection 01</span>
+            <span class="case-ctx">Stanford University · Autumn 2018 · Andrew Ng</span>
+          </div>
+          <h3 class="coll-title">Study Materials for Stanford Class CS229</h3>
+          <p class="coll-lede">
+            CS229 is Stanford's machine-learning course. These are my guides to it — one per lecture, written
+            against the lecture itself and the official course notes, and filling in <strong>the gaps the
+            lecture leaves open</strong>. Three are published so far; the numbering follows the course, so it
+            fills in as I go.
+          </p>
+        </div>
+        <div class="coll-meta">
+          <span><b>03</b> lectures published</span>
+          <span><b>06</b> interactive demos</span>
+          <span><b>30</b> problems, solved</span>
+          <span>Source: cs229.stanford.edu</span>
+        </div>
+
+        <ol class="mats">
+
+          
+          <li class="mat rise" id="lec1">
+            <div class="mat-key">
+              <span class="mat-no" aria-hidden="true">01</span>
+              <span class="mat-course">CS229 · Lecture 1</span>
+            </div>
+            <div>
+              <h4 class="mat-title">The Landscape of Machine Learning</h4>
+              <p>
+                Lecture 1 is the only lecture in CS229 that does not teach an algorithm — it draws the map. The
+                guide follows it: what a learning problem actually is, the notation the rest of the course
+                assumes, then the three paradigms in turn — <strong>supervised, unsupervised and reinforcement
+                learning</strong> — before the two blocks that cut across all of them, learning theory and
+                machine-learning strategy, and a straight answer on where deep learning sits.
+              </p>
+              <p>
+                Four demonstrations carry the ideas rather than describing them: fitting a line to the housing
+                data, moving a decision boundary through the tumour data, watching k-means settle, and changing
+                the reward function in a gridworld to see the optimal policy change with it.
+              </p>
+              <ul class="mat-facts">
+                <li><b>12</b><small>Sections</small></li>
+                <li><b>04</b><small>Interactive demos</small></li>
+                <li><b>07</b><small>Problems, solved</small></li>
+                <li><b>10</b><small>Figures</small></li>
+              </ul>
+              <div class="mat-foot">
+                <ul class="topics">
+                  <li>Supervised</li><li>Unsupervised</li><li>Reinforcement</li>
+                  <li>Learning theory</li><li>Deep learning</li>
+                </ul>
+                <a class="open" href="blogs/cs229/lecture-1.html">Open study guide<span aria-hidden="true"></span></a>
+              </div>
+            </div>
+          </li>
+
+          
+          <li class="mat rise" id="lec2">
+            <div class="mat-key">
+              <span class="mat-no" aria-hidden="true">02</span>
+              <span class="mat-course">CS229 · Lecture 2</span>
+            </div>
+            <div>
+              <h4 class="mat-title">Linear Regression, Gradient Descent &amp; the Normal Equations</h4>
+              <p>
+                The lecture does one thing: it takes the oldest model in statistics and shows three ways to fit
+                it — one iterative algorithm that scales, one noisy variant of that, and one closed form that
+                needs no iteration at all. The guide covers <strong>everything the lecture proves, everything it
+                asserts without proof, and everything it leaves for later</strong>, with the pictures that make
+                each claim obvious.
+              </p>
+              <p>
+                It keeps a gap ledger — seventeen places where the lecture moves on without justifying a step,
+                each one filled in and marked. The playground draws the cost function as a contour map and
+                traces the gradient-descent path across it, so the effect of the learning rate is something you
+                watch rather than something you are told.
+              </p>
+              <ul class="mat-facts">
+                <li><b>14</b><small>Sections</small></li>
+                <li><b>17</b><small>Gaps filled</small></li>
+                <li><b>13</b><small>Problems, solved</small></li>
+                <li><b>15</b><small>Figures</small></li>
+              </ul>
+              <div class="mat-foot">
+                <ul class="topics">
+                  <li>LMS</li><li>Batch &amp; stochastic GD</li><li>Learning rate</li>
+                  <li>Normal equations</li><li>Why squared error</li>
+                </ul>
+                <a class="open" href="blogs/cs229/lecture-2.html">Open study guide<span aria-hidden="true"></span></a>
+              </div>
+            </div>
+          </li>
+
+          
+          <li class="mat rise" id="lec3">
+            <div class="mat-key">
+              <span class="mat-no" aria-hidden="true">03</span>
+              <span class="mat-course">CS229 · Lecture 3</span>
+            </div>
+            <div>
+              <h4 class="mat-title">Locally Weighted &amp; Logistic Regression</h4>
+              <p>
+                Four things in seventy-five minutes: a non-parametric regression algorithm, a probabilistic
+                justification for least squares, the first classification algorithm in the course, and Newton's
+                method. The guide derives each from scratch — including the closed form for locally weighted
+                regression, the proof that <strong>the logistic log-likelihood is concave</strong>, and why
+                Newton's method applied to linear regression converges in a single step.
+              </p>
+              <p>
+                The interactive figure is a locally weighted fit with the bandwidth on a slider: widen it and the
+                fit stiffens toward a straight line, narrow it and it chases the noise. That trade-off is the
+                whole lecture, and it is easier to feel than to read.
+              </p>
+              <ul class="mat-facts">
+                <li><b>11</b><small>Sections</small></li>
+                <li><b>01</b><small>Interactive demo</small></li>
+                <li><b>10</b><small>Problems, solved</small></li>
+                <li><b>14</b><small>Figures</small></li>
+              </ul>
+              <div class="mat-foot">
+                <ul class="topics">
+                  <li>LWR</li><li>Probabilistic interpretation</li><li>Logistic regression</li>
+                  <li>Newton's method</li><li>Toward GLMs</li>
+                </ul>
+                <a class="open" href="blogs/cs229/lecture-3.html">Open study guide<span aria-hidden="true"></span></a>
+              </div>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="tail">
+    <h2>More as I get to them</h2>
+    <p>
+      The CS229 collection grows one lecture at a time, and other collections will sit beside it as they are
+      written. Every guide here is mine, written from the lecture and the published course notes — CS229 itself
+      is Stanford's, and the material is credited on each page.
+    </p>
+    <a class="back-home" href="index.html">← Back to the portfolio</a>
+
+    <div class="foot">
+      <span>Angshuman Bhagat · Kolkata, India</span>
+      <span>Blogs · 2026</span>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var bodies = Array.prototype.slice.call(document.querySelectorAll(".case-body"));
+  var risers = Array.prototype.slice.call(document.querySelectorAll(".rise"));
+  var gauge = document.getElementById("gauge");
+  var railpct = document.getElementById("railpct");
+  var topbar = document.getElementById("topbar");
+  var marker = document.getElementById("railmarker");
+  var links = Array.prototype.slice.call(document.querySelectorAll("#railnav a"));
+  var sections = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+
+  function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+  function smooth(t) { return t * t * (3 - 2 * t); }
+
+  var lastActive = -1;
+
+  function frame() {
+    var vh = window.innerHeight || 1;
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+
+    var max = Math.max(1, document.documentElement.scrollHeight - vh);
+    var p = clamp(y / max, 0, 1);
+    if (gauge) { gauge.style.width = (p * 100).toFixed(2) + "%"; }
+    if (topbar) { topbar.style.transform = "scaleX(" + p.toFixed(4) + ")"; }
+    if (railpct) {
+      var pct = Math.round(p * 100);
+      railpct.textContent = pct < 10 ? "0" + pct : String(pct);
+    }
+
+    var activeIdx = 0;
+    for (var s = 0; s < sections.length; s++) {
+      if (sections[s] && sections[s].getBoundingClientRect().top <= vh * 0.4) { activeIdx = s; }
+    }
+    if (activeIdx !== lastActive) {
+      lastActive = activeIdx;
+      for (var l = 0; l < links.length; l++) {
+        if (l === activeIdx) { links[l].setAttribute("aria-current", "true"); }
+        else { links[l].removeAttribute("aria-current"); }
+      }
+      if (marker && links[activeIdx]) {
+        var a = links[activeIdx];
+        marker.style.setProperty("--marker-y", (a.offsetTop + a.offsetHeight / 2) + "px");
+        marker.style.opacity = "1";
+      }
+    }
+
+    if (reduce) { return; }
+
+    for (var i = 0; i < bodies.length; i++) {
+      var el = bodies[i];
+      var r = el.getBoundingClientRect();
+      if (r.bottom < -vh * 0.6 || r.top > vh * 1.6) { continue; }
+      var d = ((r.top + r.height / 2) - vh / 2) / vh;
+      var e = smooth(clamp(Math.abs(d), 0, 1));
+
+      if (e < 0.02) {                                   /* effectively centred: detach */
+        if (el.classList.contains("tilting")) {
+          el.classList.remove("tilting");
+          el.style.removeProperty("--z");
+          el.style.removeProperty("--o");
+        }
+        continue;
+      }
+      if (!el.classList.contains("tilting")) { el.classList.add("tilting"); }
+
+      el.style.setProperty("--z", (d > 0 ? 1 - e * 0.08 : 1 + e * 0.04).toFixed(4));
+      el.style.setProperty("--o", (1 - e * 0.38).toFixed(3));
+    }
+
+    for (var k = 0; k < risers.length; k++) {
+      var it = risers[k];
+      var ir = it.getBoundingClientRect();
+      if (ir.bottom < 0 || ir.top > vh * 1.35) { continue; }
+      var t = clamp((vh * 0.94 - ir.top) / (vh * 0.40), 0, 1);
+      var q = smooth(t);
+      it.style.setProperty("--ry", ((1 - q) * 22).toFixed(2) + "px");
+      it.style.setProperty("--ro", (0.55 + q * 0.45).toFixed(3));
+    }
+  }
+
+  var queued = false;
+  function onScroll() {
+    if (queued) { return; }
+    queued = true;
+    window.requestAnimationFrame(function () { queued = false; frame(); });
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  frame();
+})();
+</script>
+
+</body>
+</html>

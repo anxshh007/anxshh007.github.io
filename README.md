@@ -16,6 +16,8 @@ University.
 | --- | --- |
 | [`index.html`](index.html) | The portfolio — profile, selected work, team leadership, experience, stack, credentials, contact |
 | [`projects.html`](projects.html) | Long-form case files for six public projects: what each does, how it works underneath, and where its limits are |
+| [`blogs.html`](blogs.html) | The blog — study material, starting with Stanford CS229 |
+| [`blogs/`](blogs) | The study guides themselves, one self-contained page per lecture |
 | [`404.html`](404.html) | Styled not-found page |
 | [`assets/`](assets) | Nine project screenshots and the social preview card |
 
@@ -45,6 +47,11 @@ near-black ground.
 **Screenshots.** All genuine. Four of the six projects ship as single
 self-contained HTML files, so those were captured by rendering the published
 builds themselves rather than mocking anything up.
+
+**Study guides.** Each page under `blogs/` is one file with everything in it —
+the mathematics typeset in the document, the figures and interactive demos drawn
+on a canvas by the page itself, the fonts embedded. That is why they are large,
+and why they work with the network off.
 
 ## Accessibility and resilience
 
